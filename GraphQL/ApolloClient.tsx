@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { ApolloLink, HttpLink } from "@apollo/client";
+import { ApolloLink, HttpLink } from '@apollo/client';
 import {
   ApolloNextAppProvider,
   NextSSRApolloClient,
   NextSSRInMemoryCache,
-  SSRMultipartLink,
-} from "@apollo/experimental-nextjs-app-support/ssr";
+  SSRMultipartLink
+} from '@apollo/experimental-nextjs-app-support/ssr';
 
 const apolloClient = () => {
   const httpLink = new HttpLink({
-    uri: "",
+    uri: ''
   });
 
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link:
-      typeof window === "undefined"
+      typeof window === 'undefined'
         ? ApolloLink.from([
             new SSRMultipartLink({
-              stripDefer: true,
+              stripDefer: true
             }),
-            httpLink,
+            httpLink
           ])
-        : httpLink,
+        : httpLink
   });
 };
 

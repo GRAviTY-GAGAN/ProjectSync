@@ -2,7 +2,7 @@
 . "$(dirname "$0")/_/husky.sh"
 
 # Add the following
-yarn lint-staged
+yarn lint
 
 # If using npm, remove above and uncomment below
 # npm run lint-staged
