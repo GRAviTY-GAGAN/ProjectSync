@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@apollo/client": "^3.8.0-rc.2",
@@ -23,11 +24,14 @@
     "react-redux": "^9.0.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8.55.0",
     "eslint-config-next": "14.0.4",
+    "husky": "^8.0.3",
     "typescript": "^5"
   }
 }
