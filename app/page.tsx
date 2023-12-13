@@ -6,7 +6,8 @@ const page = () => {
     <div>
       page
       <Box>
-        <Button>Test Button</Button>
+        <Button>
+        Test Button</Button>
       </Box>
     </div>
   );
