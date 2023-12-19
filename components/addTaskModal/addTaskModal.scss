@@ -1,0 +1,169 @@
+.add-task-title {
+  font-size: small !important;
+  color: var(--gray-one);
+  font-weight: 400 !important;
+}
+
+.add-task-close {
+  font-size: x-small !important;
+  color: var(--gray-one);
+}
+
+.add-task-close:hover {
+  background-color: transparent;
+}
+
+.add-modal-task-title {
+  border-bottom: 1px solid var(--gray-one);
+
+  input {
+    width: 100%;
+    outline: none;
+  }
+}
+
+.add-modal-task-details {
+  font-size: small;
+  color: var(--gray-one);
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-one);
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+  }
+
+  input {
+    outline: none;
+  }
+
+  .add-modal-detail {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+
+    .add-modal-values {
+      color: black;
+    }
+
+    div:nth-of-type(1) {
+      display: flex;
+      gap: 0.3rem;
+      width: 5rem;
+      align-items: center;
+
+      .add-modal-icon {
+        width: 15px;
+      }
+    }
+  }
+}
+
+.add-task-label-value {
+  display: flex;
+  gap: 5px;
+
+  input {
+    width: 6rem;
+  }
+
+  .add-modal-label {
+    display: flex !important;
+    gap: 10px !important;
+
+    .add-modal-label-wrap {
+      display: flex;
+      background-color: var(--blue-two);
+      color: var(--blue-one);
+      padding: 2px 10px;
+      border-radius: 50px;
+      width: fit-content !important;
+      justify-content: center;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+
+      span:nth-of-type(2) {
+        display: none;
+      }
+
+      .show {
+        display: block !important;
+      }
+    }
+  }
+}
+
+.add-modal-attachments {
+  margin-top: 1.5rem;
+  font-size: small;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-one);
+
+  h2 {
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  label {
+    cursor: pointer;
+  }
+
+  #fileInput {
+    display: none;
+  }
+
+  .add-modal-files {
+    display: flex;
+    gap: 10px;
+    row-gap: 5px;
+    flex-wrap: wrap;
+    color: var(--blue-one);
+    margin-bottom: 0.5rem;
+
+    span {
+      cursor: pointer;
+    }
+
+    span:nth-of-type(2) {
+      display: none;
+    }
+
+    .add-modal-file-wrap {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      align-items: center;
+
+      .show {
+        display: block;
+      }
+    }
+  }
+}
+
+.add-modal-description {
+  margin-top: 1.5rem;
+
+  h2 {
+    font-size: small;
+    margin-bottom: 1rem;
+  }
+
+  textarea {
+    width: 100%;
+    outline: none;
+    border-bottom: 1px solid var(--gray-one);
+    height: fit-content;
+  }
+
+  textarea::placeholder {
+    font-size: small;
+  }
+}
