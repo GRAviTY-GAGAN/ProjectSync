@@ -10,7 +10,7 @@ import {
 
 const apolloClient = () => {
   const httpLink = new HttpLink({
-    uri: ''
+    uri: `${process.env.NEXT_PUBLIC_DEVELOPMENT_LINK}/graphql`
   });
 
   return new NextSSRApolloClient({
