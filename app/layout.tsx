@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
-import { ApolloWrapper } from '@/graphQl/ApolloClient';
+import { ApolloWrapper } from '@/graphql/ApolloClient';
 import ReduxProvider from '@/redux/ReduxProvider';
 
 const inter = Inter({ subsets: ['latin'] });
