@@ -5,7 +5,6 @@ import React from 'react';
 
 const Page = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <div>
       page
