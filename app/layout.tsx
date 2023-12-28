@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Box, ChakraProvider, Divider, Flex } from '@chakra-ui/react';
 import { ApolloWrapper } from '@/graphql/ApolloClient';
 import ReduxProvider from '@/redux/ReduxProvider';
+import TopNav from '@/components/TopNav/TopNav';
+import MainContainerWrapper from '@/components/ui/MainContainerWrapper/MainContainerWrapper';
+import SideNav from '@/components/SideNav/SideNav';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +25,23 @@ export default function RootLayout({
       <body className={inter.className}>
         <ApolloWrapper>
           <ChakraProvider>
-            <ReduxProvider>{children}</ReduxProvider>
+            <ReduxProvider>
+              <MainContainerWrapper>
+                <Flex>
+                  <SideNav />
+                  <Divider
+                    orientation="vertical"
+                    height={'100vh'}
+                    width={'2px'}
+                  />
+                  <Box w="80vw">
+                    <TopNav />
+                    <Divider width={'100%'} height={'2px'} />
+                    {children}
+                  </Box>
+                </Flex>
+              </MainContainerWrapper>
+            </ReduxProvider>
           </ChakraProvider>
         </ApolloWrapper>
       </body>

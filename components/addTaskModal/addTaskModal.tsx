@@ -18,7 +18,7 @@ import { FaRegCalendar, FaRegUser, FaRegUserCircle } from 'react-icons/fa';
 import { FiTarget } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
 import { useMutation } from '@apollo/client';
-import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphQl/queries';
+import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphql/queries';
 import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 
 const AddTaskModal = ({ isOpen, onClose }: any) => {

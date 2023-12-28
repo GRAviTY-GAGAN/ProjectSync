@@ -9,4 +9,9 @@
 
   --blue-one: #197dca;
   --blue-two: #f2f6fd;
+  --text-black-primary: #020617;
+}
+.icon-size {
+  width: 24px;
+  height: 24px;
 }
