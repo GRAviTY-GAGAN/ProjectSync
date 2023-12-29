@@ -8,7 +8,9 @@ const TopNav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex alignItems={'center'} p={4} justifyContent={'flex-end'} gap={4}>
-      <Button onClick={onOpen}> + Add Task</Button>
+      <Button onClick={onOpen} size="sm">
+        + Add Task
+      </Button>
       <AddTaskModal isOpen={isOpen} onClose={onClose} />
       <FiBell className="icon-size" />
       <Avatar name="Home" size={'sm'} />
