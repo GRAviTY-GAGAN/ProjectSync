@@ -1,8 +1,10 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Divider, Input, Tag } from '@chakra-ui/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Column, ID } from '../../types';
 import { useState } from 'react';
+import './index.scss';
+
 interface Props {
   column: Column;
   updateColumnTitle: (id: ID, title: string) => void;
@@ -34,33 +36,35 @@ const ColumnContainer = (props: Props) => {
   };
   if (isDragging) {
     return (
-      <div ref={setNodeRef} style={style}>
-        Hello
+      <div ref={setNodeRef} style={style} className="column-container-overlay">
+        <Tag colorScheme={column.color_scheme} className="column-header-title">
+          {column.title}
+        </Tag>
+        <Divider my={2} />
+        <Box className="tasks-container"></Box>
       </div>
     );
   }
   return (
-    <Box
-      minW="20vw"
-      minH="60vh"
-      borderRadius={4}
-      border="1px"
-      borderColor="gray.200"
-      backgroundColor={'#f8fafc'}
-      overflowY={'scroll'}
-      mr={3}
-      ref={setNodeRef}
-      style={style}
-    >
+    <Box className="column-container" ref={setNodeRef} style={style}>
       <div
         {...attributes}
         {...listeners}
         style={{ cursor: 'pointer' }}
         onClick={() => setEditMode(true)}
       >
-        {!editMode && column.title}
+        {!editMode && (
+          <Tag
+            colorScheme={column.color_scheme}
+            className="column-header-title"
+          >
+            {column.title}
+          </Tag>
+        )}
         {editMode && (
-          <input
+          <Input
+            size={'sm'}
+            borderRadius={4}
             value={column.title}
             onChange={e => updateColumnTitle(column.id, e.target.value)}
             autoFocus
@@ -71,6 +75,8 @@ const ColumnContainer = (props: Props) => {
             }}
           />
         )}
+        <Divider my={2} />
+        <Box className="tasks-container"></Box>
       </div>
     </Box>
   );

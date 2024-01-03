@@ -30,20 +30,24 @@ import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
 import { Column, ID } from '@/types';
 import { createPortal } from 'react-dom';
+import './index.scss';
 
 const KanbanBoard = () => {
   const initialColumns = [
     {
       id: 1,
-      title: 'TO DO'
+      title: 'TO DO',
+      color_scheme: 'red'
     },
     {
       id: 2,
-      title: 'IN PROGRESS'
+      title: 'IN PROGRESS',
+      color_scheme: 'red'
     },
     {
       id: 3,
-      title: 'DONE'
+      title: 'DONE',
+      color_scheme: 'red'
     }
   ];
   const [columns, setColumns] = useState(initialColumns);
@@ -57,7 +61,8 @@ const KanbanBoard = () => {
       ...prev,
       {
         id: v,
-        title: data.title
+        title: data.title,
+        color_scheme: data.color_scheme
       }
     ]);
     v = v + 1;
@@ -100,7 +105,7 @@ const KanbanBoard = () => {
     setColumns(newColumns);
   };
   return (
-    <Box minW="100%" p={8}>
+    <Box minW="100%" p={8} className="kanban-board-container">
       <Flex alignItems={'center'} justifyContent={'space-between'} mb={4}>
         <Text as="b" fontSize={'x-large'}>
           Board
@@ -149,12 +154,13 @@ const KanbanBoard = () => {
           </Menu>
         </div>
       </Flex>
+      <Divider />
       <DndContext
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         sensors={sensors}
       >
-        <Flex overflowX={'scroll'}>
+        <Flex className="horizontal-scroll-column-wrapper">
           <SortableContext items={columnsId}>
             {columns.length > 0 &&
               columns.map(col => (
