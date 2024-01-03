@@ -16,24 +16,20 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react';
-import { useState } from 'react';
-
-const Column = ({ title }: { title: string }) => {
-  return (
-    <Box
-      minW="20vw"
-      minH="60vh"
-      borderRadius={4}
-      border="1px"
-      borderColor="gray.200"
-      backgroundColor={'#f8fafc'}
-      overflowY={'scroll'}
-      mr={3}
-    >
-      {title}
-    </Box>
-  );
-};
+import { useMemo, useState } from 'react';
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core';
+import { SortableContext, arrayMove } from '@dnd-kit/sortable';
+import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
+import { Column, ID } from '@/types';
+import { createPortal } from 'react-dom';
 
 const KanbanBoard = () => {
   const initialColumns = [
@@ -51,18 +47,57 @@ const KanbanBoard = () => {
     }
   ];
   const [columns, setColumns] = useState(initialColumns);
+  const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
+  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleAddColumn = () => {
+  const handleAddColumn = (data: any) => {
     let v = 4;
     setColumns(prev => [
       ...prev,
       {
         id: v,
-        title: 'XYZ'
+        title: data.title
       }
     ]);
     v = v + 1;
+  };
+  const onDragStart = (event: DragStartEvent) => {
+    console.log(event);
+    if (event.active.data.current?.type === 'Column') {
+      setActiveColumn(event.active.data.current.column);
+      return;
+    }
+  };
+  const onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+    const activeColumnId = active.id;
+    const overColumnId = over.id;
+
+    if (activeColumnId === overColumnId) return;
+
+    setColumns(columns => {
+      const activeColumnIndex = columns.findIndex(
+        col => col.id === activeColumnId
+      );
+      const overColumnIndex = columns.findIndex(col => col.id === overColumnId);
+      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+    });
+  };
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3 //3px
+      }
+    })
+  );
+  const updateColumnTitle = (id: ID, title: string) => {
+    const newColumns = columns.map(col => {
+      if (col.id !== id) return col;
+      return { ...col, title };
+    });
+    setColumns(newColumns);
   };
   return (
     <Box minW="100%" p={8}>
@@ -114,17 +149,37 @@ const KanbanBoard = () => {
           </Menu>
         </div>
       </Flex>
-      <Flex overflowX={'scroll'}>
-        {columns.length > 0 &&
-          columns.map(col => <Column title={col.title} key={col.id} />)}
-        <Button onClick={onOpen}>+</Button>
-        <AddBoardColumnModal
-          onCancel={onClose}
-          onClose={onClose}
-          onSubmit={handleAddColumn}
-          isOpen={isOpen}
-        />
-      </Flex>
+      <DndContext
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        sensors={sensors}
+      >
+        <Flex overflowX={'scroll'}>
+          <SortableContext items={columnsId}>
+            {columns.length > 0 &&
+              columns.map(col => (
+                <ColumnContainer
+                  updateColumnTitle={updateColumnTitle}
+                  column={col}
+                  key={col.id}
+                />
+              ))}
+          </SortableContext>
+          <Button onClick={onOpen}>+</Button>
+          <AddBoardColumnModal
+            onCancel={onClose}
+            onClose={onClose}
+            onSubmit={handleAddColumn}
+            isOpen={isOpen}
+          />
+        </Flex>
+        {/* {createPortal(
+          <DragOverlay>
+            {activeColumn && <ColumnContainer column={activeColumn} />}
+          </DragOverlay>,
+          window.document.body
+        )} */}
+      </DndContext>
     </Box>
   );
 };
