@@ -1,12 +1,17 @@
 'use client';
+import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 import AddBoardColumnModal from '@/components/AddBoardColumnModal/AddBoardColumnModal';
-import { HiOutlineSortDescending } from 'react-icons/hi';
-import { LuFilter } from 'react-icons/lu';
-import { BiUser } from 'react-icons/bi';
+import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
+import {
+  ADD_UPDATE_COLUMN_TO_PROJECT,
+  GET_PROJECT_COLUMNS
+} from '@/graphql/queries';
+import { generateId } from '@/utils';
+import { Column, ID } from '@/utils/types';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Box,
   Button,
-  Divider,
   Flex,
   Menu,
   MenuButton,
@@ -16,7 +21,6 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react';
-import { useEffect, useMemo, useState } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -27,17 +31,11 @@ import {
   useSensors
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
-import { Column, ID } from '@/utils/types';
-import { createPortal } from 'react-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { BiUser } from 'react-icons/bi';
+import { HiOutlineSortDescending } from 'react-icons/hi';
+import { LuFilter } from 'react-icons/lu';
 import './index.scss';
-import { useMutation, useQuery } from '@apollo/client';
-import {
-  ADD_UPDATE_COLUMN_TO_PROJECT,
-  GET_PROJECT_COLUMNS
-} from '@/graphql/queries';
-import { generateId } from '@/utils';
-import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 
 const getColumnsStructuredData = (
   columns: any[]

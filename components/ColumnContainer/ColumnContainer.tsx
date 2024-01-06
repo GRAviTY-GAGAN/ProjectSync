@@ -1,8 +1,8 @@
 import { Box, Divider, Input, Tag } from '@chakra-ui/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Column, ID } from '../../utils/types';
 import { useState } from 'react';
+import { Column, ID } from '../../utils/types';
 import './index.scss';
 
 interface Props {

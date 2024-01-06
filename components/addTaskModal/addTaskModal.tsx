@@ -1,3 +1,6 @@
+import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
+import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphql/queries';
+import { useMutation } from '@apollo/client';
 import {
   Button,
   Modal,
@@ -9,17 +12,14 @@ import {
   ModalOverlay,
   Spinner
 } from '@chakra-ui/react';
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
-import './addTaskModal.scss';
 import Image from 'next/image';
-import trendingUp from '../../assets/icons/material-trending-up.svg';
-import labelIcon from '../../assets/icons/material-label.svg';
-import { FaRegCalendar, FaRegUser, FaRegUserCircle } from 'react-icons/fa';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { FaRegCalendar, FaRegUserCircle } from 'react-icons/fa';
 import { FiTarget } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
-import { useMutation } from '@apollo/client';
-import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphql/queries';
-import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
+import labelIcon from '../../assets/icons/material-label.svg';
+import trendingUp from '../../assets/icons/material-trending-up.svg';
+import './addTaskModal.scss';
 
 const AddTaskModal = ({ isOpen, onClose }: any) => {
   const [labelValue, setLabelValue] = useState<string>('');
