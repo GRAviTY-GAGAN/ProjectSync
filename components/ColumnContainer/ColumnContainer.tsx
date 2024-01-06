@@ -4,6 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useState } from 'react';
 import { Column, ID } from '../../utils/types';
 import './index.scss';
+import TaskCard from '../TaskCard/TaskCard';
 
 interface Props {
   column: Column;
@@ -76,7 +77,9 @@ const ColumnContainer = (props: Props) => {
           />
         )}
         <Divider my={2} />
-        <Box className="tasks-container"></Box>
+        <Box className="tasks-container">
+          <TaskCard />
+        </Box>
       </div>
     </Box>
   );

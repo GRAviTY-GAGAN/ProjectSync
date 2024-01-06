@@ -1,8 +1,7 @@
 'use client';
-import { Avatar, Box, Button, Flex, useDisclosure } from '@chakra-ui/react';
+import { Avatar, Button, Flex, useDisclosure } from '@chakra-ui/react';
 import { FiBell } from 'react-icons/fi';
-import React from 'react';
-import AddTaskModal from '../addTaskModal/addTaskModal';
+import AddTaskModal from '../AddTaskModal/addTaskModal';
 
 const TopNav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

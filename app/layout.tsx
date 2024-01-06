@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { Box, ChakraProvider, Divider, Flex } from '@chakra-ui/react';
 import { ApolloWrapper } from '@/graphql/ApolloClient';
@@ -7,8 +6,6 @@ import ReduxProvider from '@/redux/ReduxProvider';
 import TopNav from '@/components/TopNav/TopNav';
 import MainContainerWrapper from '@/components/ui/MainContainerWrapper/MainContainerWrapper';
 import SideNav from '@/components/SideNav/SideNav';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <ApolloWrapper>
           <ChakraProvider>
             <ReduxProvider>
