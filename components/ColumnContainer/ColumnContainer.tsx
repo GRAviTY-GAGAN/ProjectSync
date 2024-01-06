@@ -78,13 +78,13 @@ const ColumnContainer = (props: Props) => {
             }}
           />
         )}
-        <Divider my={2} />
-        <Box className="tasks-container">
-          {tasks &&
-            tasks.length > 0 &&
-            tasks.map((task: any) => <TaskCard task={task} key={task.id} />)}
-        </Box>
       </div>
+      <Divider my={2} />
+      <Box className="tasks-container">
+        {tasks &&
+          tasks.length > 0 &&
+          tasks.map((task: any) => <TaskCard task={task} key={task.id} />)}
+      </Box>
     </Box>
   );
 };
