@@ -18,3 +18,9 @@ export const COLOR_SCHEMES = {
   TWITTER: 'twitter',
   TELEGRAM: 'telegram'
 };
+
+export const TASK_PRIORITY = {
+  LOW: 'Low', // <HiMinus />
+  MEDIUM: 'Medium', // <HiChevronUp />
+  HIGH: 'High' // <HiChevronDoubleUp />
+};

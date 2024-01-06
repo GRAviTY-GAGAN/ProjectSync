@@ -9,10 +9,12 @@ import TaskCard from '../TaskCard/TaskCard';
 interface Props {
   column: Column;
   updateColumnTitle: (id: ID, title: string) => void;
+  // TODO: change type of Task
+  tasks: any[];
 }
 
 const ColumnContainer = (props: Props) => {
-  const { column, updateColumnTitle } = props;
+  const { column, updateColumnTitle, tasks } = props;
 
   const [editMode, setEditMode] = useState(false);
   const {
@@ -78,7 +80,9 @@ const ColumnContainer = (props: Props) => {
         )}
         <Divider my={2} />
         <Box className="tasks-container">
-          <TaskCard />
+          {tasks &&
+            tasks.length > 0 &&
+            tasks.map((task: any) => <TaskCard task={task} key={task.id} />)}
         </Box>
       </div>
     </Box>

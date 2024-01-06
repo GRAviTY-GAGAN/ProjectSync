@@ -12,13 +12,14 @@
 
   --blue-one: #197dca;
   --blue-two: #f2f6fd;
-  --slate-100: #f1f5f9;
 
   /* task card background*/
   --slate-50: #f8fafc;
-
+  --slate-100: #f1f5f9;
   --slate-200: #e2e8f0;
   --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-800: #1e293b;
 }
 
 .icon-size {
@@ -28,6 +29,10 @@
 .icon-size-small {
   width: 18px;
   height: 18px;
+}
+.icon-size-extra-small {
+  width: 12px;
+  height: 12px;
 }
 
 /* width */

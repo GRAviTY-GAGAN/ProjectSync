@@ -1,7 +1,13 @@
 .task-card-wrapper {
   width: 100%;
-  height: 150px;
-  background-color: var(--slate-50);
-  border-radius: 14px;
-  padding: 16px;
+  min-height: 150px;
+  background-color: var(--slate-50) !important;
+  border-radius: 14px !important;
+
+  .story-points-icon {
+    color: var(--slate-100);
+  }
+  .story-points {
+    color: var(--slate-500);
+  }
 }

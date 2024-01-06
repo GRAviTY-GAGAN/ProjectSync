@@ -36,6 +36,7 @@ import { BiUser } from 'react-icons/bi';
 import { HiOutlineSortDescending } from 'react-icons/hi';
 import { LuFilter } from 'react-icons/lu';
 import './index.scss';
+import { TasksMockData } from '@/utils/mockdata';
 
 const getColumnsStructuredData = (
   columns: any[]
@@ -54,6 +55,7 @@ const KanbanBoard = () => {
   });
 
   const [columns, setColumns] = useState<Column[] | []>([]);
+  const [tasks, setTasks] = useState<any[]>(TasksMockData);
 
   const columnsId = useMemo(() => columns?.map(col => col?.id), [columns]);
 
@@ -213,6 +215,7 @@ const KanbanBoard = () => {
                   updateColumnTitle={updateColumnTitle}
                   column={col}
                   key={col.id}
+                  tasks={tasks.filter(task => task.column_id === col.id)}
                 />
               ))}
             </SortableContext>
@@ -230,6 +233,7 @@ const KanbanBoard = () => {
             <ColumnContainer
               column={activeColumn}
               updateColumnTitle={updateColumnTitle}
+              tasks={tasks.filter(task => task.column_id === activeColumn.id)}
             />
           </DragOverlay>
         )}
