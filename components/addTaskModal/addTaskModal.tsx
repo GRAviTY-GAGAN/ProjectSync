@@ -18,7 +18,7 @@ import { FaRegCalendar, FaRegUser, FaRegUserCircle } from 'react-icons/fa';
 import { FiTarget } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
 import { useMutation } from '@apollo/client';
-import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphQl/queries';
+import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphql/queries';
 import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 
 const AddTaskModal = ({ isOpen, onClose }: any) => {
@@ -136,18 +136,11 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
 
           // Delete attachments only if there were any attachments selected and uploaded
           filesSelected.length &&
-            deleteAttachments({ variables: { attachments } })
-              .then(res => {
-                console.log(res.data?.deleteUploads.message);
-              })
-              .catch(err => {
-                console.error(
-                  'Something went wrong while deleting attachments'
-                );
-              });
+            deleteAttachments({ variables: { attachments } }).catch(err => {
+              console.error('Something went wrong while deleting attachments');
+            });
         })
         .finally(() => {
-          console.log('loading end');
           setLoading(false);
           closeModal();
         });
@@ -175,7 +168,6 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
           })
           .catch(err => {
             console.error(err);
-            console.log(`${file.name} of size ${file.size} failed to upload.`);
           });
       });
 

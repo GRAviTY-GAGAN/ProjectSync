@@ -34,3 +34,27 @@ export const DELETE_ATTACHMENTS = gql`
     }
   }
 `;
+
+export const ADD_UPDATE_COLUMN_TO_PROJECT = gql`
+  mutation updateColumnsInProject($updateColumnsDto: UpdateColumnsDto!) {
+    updateColumnsInProject(updateColumnsDto: $updateColumnsDto) {
+      message
+      status
+    }
+  }
+`;
+export const GET_PROJECT_COLUMNS = gql`
+  query getProjectById($id: String!) {
+    getProjectById(id: $id) {
+      message
+      status
+      data {
+        columns {
+          color_scheme
+          id
+          title
+        }
+      }
+    }
+  }
+`;

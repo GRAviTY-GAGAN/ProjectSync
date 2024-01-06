@@ -1,0 +1,17 @@
+.side-nav-container {
+  width: 17vw;
+  height: 100vh;
+  overflow-y: scroll;
+
+  .side-nav-item {
+    padding: 12px;
+    margin: 4px;
+    align-items: center;
+    gap: 16px;
+
+    &:hover {
+      background-color: #dbeafe;
+      border-radius: 4px;
+    }
+  }
+}
