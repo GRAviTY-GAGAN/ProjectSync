@@ -1,4 +1,4 @@
-import { COLOR_SCHEMES } from '@/constants';
+import { COLOR_SCHEMES } from '@/utils/constants';
 import {
   Button,
   Divider,
@@ -90,6 +90,7 @@ const AddBoardColumnModal = ({ onClose, isOpen, onSubmit, onCancel }: any) => {
                 onClick={() => {
                   setSelectedColorScheme(color);
                 }}
+                key={i}
               >
                 Title
               </Tag>

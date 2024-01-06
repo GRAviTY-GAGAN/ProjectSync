@@ -34,7 +34,7 @@ export default function RootLayout({
                     height={'100vh'}
                     width={'2px'}
                   />
-                  <Box w="80vw">
+                  <Box w="83vw">
                     <TopNav />
                     <Divider width={'100%'} height={'2px'} />
                     {children}

@@ -16,7 +16,7 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -28,85 +28,133 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
-import { Column, ID } from '@/types';
+import { Column, ID } from '@/utils/types';
 import { createPortal } from 'react-dom';
 import './index.scss';
+import { useMutation, useQuery } from '@apollo/client';
+import {
+  ADD_UPDATE_COLUMN_TO_PROJECT,
+  GET_PROJECT_COLUMNS
+} from '@/graphql/queries';
+import { generateId } from '@/utils';
+import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
+
+const getColumnsStructuredData = (
+  columns: any[]
+): { title: any; id: any; color_scheme: any }[] => {
+  return columns.map((col: { title: any; id: any; color_scheme: any }) => ({
+    title: col.title,
+    id: col.id,
+    color_scheme: col.color_scheme
+  }));
+};
 
 const KanbanBoard = () => {
-  const initialColumns = [
-    {
-      id: 1,
-      title: 'TO DO',
-      color_scheme: 'red'
-    },
-    {
-      id: 2,
-      title: 'IN PROGRESS',
-      color_scheme: 'red'
-    },
-    {
-      id: 3,
-      title: 'DONE',
-      color_scheme: 'red'
+  const [updateColumns] = useMutation(ADD_UPDATE_COLUMN_TO_PROJECT);
+  const { loading, error, data } = useQuery(GET_PROJECT_COLUMNS, {
+    variables: { id: '65957be9b778ba77dcc9fbaf' }
+  });
+
+  const [columns, setColumns] = useState<Column[] | []>([]);
+
+  const columnsId = useMemo(() => columns?.map(col => col?.id), [columns]);
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const columnsData = getColumnsStructuredData(
+        data.getProjectById.data.columns
+      );
+      setColumns(columnsData);
     }
-  ];
-  const [columns, setColumns] = useState(initialColumns);
-  const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
+  }, [loading, error, data]);
+
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleAddColumn = (data: any) => {
-    let v = 4;
-    setColumns(prev => [
-      ...prev,
-      {
-        id: v,
-        title: data.title,
+  const [callToast] = useCustomToast();
+
+  const handleAddColumn = async (data: any) => {
+    try {
+      const newColumn = {
+        id: generateId().toString(),
+        title: data.title.toUpperCase(),
         color_scheme: data.color_scheme
-      }
-    ]);
-    v = v + 1;
-  };
-  const onDragStart = (event: DragStartEvent) => {
-    console.log(event);
-    if (event.active.data.current?.type === 'Column') {
-      setActiveColumn(event.active.data.current.column);
-      return;
+      };
+
+      setColumns(prevColumns => [...prevColumns, newColumn]);
+      const updateColumnsDto = {
+        project_id: '65957be9b778ba77dcc9fbaf',
+        columns: [...columns, newColumn]
+      };
+
+      const response = await updateColumns({ variables: { updateColumnsDto } });
+
+      const responseData = response.data?.updateColumnsInProject;
+      callToast({
+        title: responseData.message,
+        status: responseData.status ? StatusEnum.success : StatusEnum.warning
+      });
+    } catch (err) {
+      console.error(err);
+      callToast({
+        title: 'Something went wrong while updating columns!!',
+        status: StatusEnum.error
+      });
+    } finally {
+      onClose();
     }
   };
-  const onDragEnd = (event: DragEndEvent) => {
+
+  const onDragStart = (event: DragStartEvent) => {
+    if (event.active.data.current?.type === 'Column') {
+      setActiveColumn(event.active.data.current.column);
+    }
+  };
+
+  const onDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
+
     if (!over) return;
+
     const activeColumnId = active.id;
     const overColumnId = over.id;
 
     if (activeColumnId === overColumnId) return;
 
-    setColumns(columns => {
-      const activeColumnIndex = columns.findIndex(
-        col => col.id === activeColumnId
+    setColumns(prevColumns => {
+      const updatedColumns = arrayMove(
+        prevColumns,
+        prevColumns.findIndex(col => col.id === activeColumnId),
+        prevColumns.findIndex(col => col.id === overColumnId)
       );
-      const overColumnIndex = columns.findIndex(col => col.id === overColumnId);
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+
+      const updateColumnsDto = {
+        project_id: '65957be9b778ba77dcc9fbaf',
+        columns: updatedColumns
+      };
+
+      updateColumns({ variables: { updateColumnsDto } });
+      return updatedColumns;
     });
   };
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3 //3px
+        distance: 3
       }
     })
   );
+
   const updateColumnTitle = (id: ID, title: string) => {
-    const newColumns = columns.map(col => {
-      if (col.id !== id) return col;
-      return { ...col, title };
-    });
-    setColumns(newColumns);
+    setColumns(prevColumns =>
+      prevColumns.map(col => (col.id !== id ? col : { ...col, title }))
+    );
   };
+
   return (
-    <Box minW="100%" p={8} className="kanban-board-container">
-      <Flex alignItems={'center'} justifyContent={'space-between'} mb={4}>
+    <Box className="kanban-board-container">
+      <Box className="kanban-board-header">
         <Text as="b" fontSize={'x-large'}>
           Board
         </Text>
@@ -153,24 +201,24 @@ const KanbanBoard = () => {
             </MenuList>
           </Menu>
         </div>
-      </Flex>
-      <Divider />
+      </Box>
       <DndContext
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         sensors={sensors}
       >
         <Flex className="horizontal-scroll-column-wrapper">
-          <SortableContext items={columnsId}>
-            {columns.length > 0 &&
-              columns.map(col => (
+          {columns && columns?.length > 0 && (
+            <SortableContext items={columnsId}>
+              {columns?.map(col => (
                 <ColumnContainer
                   updateColumnTitle={updateColumnTitle}
                   column={col}
                   key={col.id}
                 />
               ))}
-          </SortableContext>
+            </SortableContext>
+          )}
           <Button onClick={onOpen}>+</Button>
           <AddBoardColumnModal
             onCancel={onClose}
@@ -179,12 +227,14 @@ const KanbanBoard = () => {
             isOpen={isOpen}
           />
         </Flex>
-        {/* {createPortal(
+        {activeColumn && (
           <DragOverlay>
-            {activeColumn && <ColumnContainer column={activeColumn} />}
-          </DragOverlay>,
-          window.document.body
-        )} */}
+            <ColumnContainer
+              column={activeColumn}
+              updateColumnTitle={updateColumnTitle}
+            />
+          </DragOverlay>
+        )}
       </DndContext>
     </Box>
   );
