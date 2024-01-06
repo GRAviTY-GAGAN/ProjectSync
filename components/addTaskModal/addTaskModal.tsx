@@ -136,18 +136,11 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
 
           // Delete attachments only if there were any attachments selected and uploaded
           filesSelected.length &&
-            deleteAttachments({ variables: { attachments } })
-              .then(res => {
-                console.log(res.data?.deleteUploads.message);
-              })
-              .catch(err => {
-                console.error(
-                  'Something went wrong while deleting attachments'
-                );
-              });
+            deleteAttachments({ variables: { attachments } }).catch(err => {
+              console.error('Something went wrong while deleting attachments');
+            });
         })
         .finally(() => {
-          console.log('loading end');
           setLoading(false);
           closeModal();
         });
@@ -175,7 +168,6 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
           })
           .catch(err => {
             console.error(err);
-            console.log(`${file.name} of size ${file.size} failed to upload.`);
           });
       });
 
