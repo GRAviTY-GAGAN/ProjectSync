@@ -3,7 +3,6 @@ import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 import AddBoardColumnModal from '@/components/AddBoardColumnModal/AddBoardColumnModal';
 import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
 import TaskCard from '@/components/TaskCard/TaskCard';
-import { motion } from 'framer-motion';
 import {
   ADD_UPDATE_COLUMN_TO_PROJECT,
   GET_PROJECT_COLUMNS
@@ -35,6 +34,7 @@ import {
   useSensors
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
+import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { BiUser } from 'react-icons/bi';
 import { HiOutlineSortDescending } from 'react-icons/hi';

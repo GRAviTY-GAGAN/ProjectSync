@@ -1,11 +1,11 @@
 import { Box, Divider, Input, Tag } from '@chakra-ui/react';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import { Column, ID } from '../../utils/types';
-import './index.scss';
 import TaskCard from '../TaskCard/TaskCard';
-import { motion } from 'framer-motion';
+import './index.scss';
 interface Props {
   column: Column;
   updateColumnTitle: (id: ID, title: string) => void;
