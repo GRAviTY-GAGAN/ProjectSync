@@ -57,7 +57,7 @@ const ColumnContainer = (props: Props) => {
     visible: (index: number) => ({
       y: 0,
       opacity: 1,
-      transition: { ease: 'easeIn', delay: (index + 2) * 0.7 }
+      transition: { ease: 'easeIn', delay: (index + 2) * 0.5 }
     })
   };
 
