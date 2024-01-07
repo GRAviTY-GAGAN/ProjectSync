@@ -52,14 +52,6 @@ const ColumnContainer = (props: Props) => {
       </div>
     );
   }
-  const taskVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: (index: number) => ({
-      y: 0,
-      opacity: 1,
-      transition: { ease: 'easeIn', delay: (index + 2) * 0.5 }
-    })
-  };
 
   return (
     <Box className="column-container" ref={setNodeRef} style={style}>
@@ -98,9 +90,7 @@ const ColumnContainer = (props: Props) => {
           {tasks &&
             tasks.length > 0 &&
             tasks.map((task: any, i: number) => (
-              <motion.div key={i} variants={taskVariants} custom={i}>
-                <TaskCard task={task} key={task.id} />
-              </motion.div>
+              <TaskCard task={task} key={task.id} />
             ))}
         </SortableContext>
       </Box>
