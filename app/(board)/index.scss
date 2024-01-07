@@ -1,0 +1,18 @@
+.kanban-board-container {
+  min-width: 100%;
+  padding: 24px;
+  .kanban-board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .horizontal-scroll-column-wrapper {
+    overflow-x: scroll;
+    height: 80vh;
+    margin-top: 24px;
+    gap: 16px;
+    display: flex;
+    scrollbar-width: 3px;
+  }
+}

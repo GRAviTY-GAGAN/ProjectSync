@@ -55,7 +55,7 @@
     div:nth-of-type(1) {
       display: flex;
       gap: 0.3rem;
-      width: 5rem;
+      width: 7rem;
       align-items: center;
 
       .add-modal-icon {
@@ -161,9 +161,14 @@
     outline: none;
     border-bottom: 1px solid var(--gray-one);
     height: fit-content;
+    font-size: small;
   }
 
   textarea::placeholder {
     font-size: small;
   }
+}
+
+.add-modal-save-btn {
+  min-width: 57px;
 }
