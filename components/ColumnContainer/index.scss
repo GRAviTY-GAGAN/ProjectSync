@@ -18,6 +18,10 @@
     border: 1px solid var(--slate-200);
     border-radius: 14px;
     padding: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    gap: 8px;
   }
 }
 .column-container-overlay {

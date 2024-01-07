@@ -5,6 +5,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Flex,
   Tag,
   TagLabel,
@@ -13,6 +14,8 @@ import {
 import { FaMountain } from 'react-icons/fa';
 import { HiChevronDoubleUp, HiChevronUp, HiMinus } from 'react-icons/hi';
 import './index.scss';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
   task: any;
@@ -45,18 +48,55 @@ const getPriorityTag = (priority: string) => {
 };
 
 const TaskCard = ({ task }: Props) => {
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: 'Task',
+      task
+    }
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform)
+  };
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="task-card-wrapper-dragging"
+      ></div>
+    );
+  }
   return (
-    <Card className="task-card-wrapper">
-      <CardBody>
+    <Card
+      className={`task-card-wrapper`}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
+      <CardHeader className="task-header">
         <Flex justifyContent="space-between" alignItems="start" width="100%">
-          <Text fontSize="sm" noOfLines={2} as="b">
+          <Text fontSize="sm" noOfLines={1} as="b">
             {task?.title}
           </Text>
           {/* <Button size={'sm'}>
             <FiMoreVertical />
           </Button> */}
         </Flex>
-        <Flex gap={2} wrap="wrap" mt={4}>
+      </CardHeader>
+      <CardBody className="task-body">
+        <Flex gap={2} wrap="wrap">
           {task?.labels?.length > 0 &&
             task?.labels.map((label: string, index: number) => (
               <Tag key={index} size={'sm'}>
@@ -65,7 +105,7 @@ const TaskCard = ({ task }: Props) => {
             ))}
         </Flex>
       </CardBody>
-      <CardFooter>
+      <CardFooter className="task-footer">
         <Flex justifyContent="space-between" alignItems="center" width="100%">
           <Flex alignItems="center" gap={2}>
             {getPriorityTag(task?.priority)}

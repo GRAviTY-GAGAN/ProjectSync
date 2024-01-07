@@ -1,7 +1,7 @@
 import { Box, Divider, Input, Tag } from '@chakra-ui/react';
-import { useSortable } from '@dnd-kit/sortable';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Column, ID } from '../../utils/types';
 import './index.scss';
 import TaskCard from '../TaskCard/TaskCard';
@@ -15,6 +15,10 @@ interface Props {
 
 const ColumnContainer = (props: Props) => {
   const { column, updateColumnTitle, tasks } = props;
+
+  const tasksIds = useMemo(() => {
+    return tasks.map(task => task.id);
+  }, [tasks]);
 
   const [editMode, setEditMode] = useState(false);
   const {
@@ -81,9 +85,11 @@ const ColumnContainer = (props: Props) => {
       </div>
       <Divider my={2} />
       <Box className="tasks-container">
-        {tasks &&
-          tasks.length > 0 &&
-          tasks.map((task: any) => <TaskCard task={task} key={task.id} />)}
+        <SortableContext items={tasksIds}>
+          {tasks &&
+            tasks.length > 0 &&
+            tasks.map((task: any) => <TaskCard task={task} key={task.id} />)}
+        </SortableContext>
       </Box>
     </Box>
   );

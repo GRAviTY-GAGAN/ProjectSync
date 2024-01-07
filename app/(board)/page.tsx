@@ -2,11 +2,13 @@
 import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 import AddBoardColumnModal from '@/components/AddBoardColumnModal/AddBoardColumnModal';
 import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
+import TaskCard from '@/components/TaskCard/TaskCard';
 import {
   ADD_UPDATE_COLUMN_TO_PROJECT,
   GET_PROJECT_COLUMNS
 } from '@/graphql/queries';
 import { generateId } from '@/utils';
+import { TasksMockData } from '@/utils/mockdata';
 import { Column, ID } from '@/utils/types';
 import { useMutation, useQuery } from '@apollo/client';
 import {
@@ -24,6 +26,7 @@ import {
 import {
   DndContext,
   DragEndEvent,
+  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   PointerSensor,
@@ -36,7 +39,6 @@ import { BiUser } from 'react-icons/bi';
 import { HiOutlineSortDescending } from 'react-icons/hi';
 import { LuFilter } from 'react-icons/lu';
 import './index.scss';
-import { TasksMockData } from '@/utils/mockdata';
 
 const getColumnsStructuredData = (
   columns: any[]
@@ -69,6 +71,7 @@ const KanbanBoard = () => {
   }, [loading, error, data]);
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+  const [activeTask, setActiveTask] = useState<any | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [callToast] = useCustomToast();
@@ -109,9 +112,15 @@ const KanbanBoard = () => {
     if (event.active.data.current?.type === 'Column') {
       setActiveColumn(event.active.data.current.column);
     }
+    if (event.active.data.current?.type === 'Task') {
+      setActiveTask(event.active.data.current.task);
+      return;
+    }
   };
 
   const onDragEnd = async (event: DragEndEvent) => {
+    setActiveColumn(null);
+    setActiveTask(null);
     const { active, over } = event;
 
     if (!over) return;
@@ -150,6 +159,45 @@ const KanbanBoard = () => {
     setColumns(prevColumns =>
       prevColumns.map(col => (col.id !== id ? col : { ...col, title }))
     );
+  };
+  const onDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (activeId === overId) return;
+
+    const isActiveATask = active.data.current?.type === 'Task';
+    const isOverATask = over.data.current?.type === 'Task';
+
+    if (!isActiveATask) return;
+
+    // Im dropping a Task over another Task
+    if (isActiveATask && isOverATask) {
+      setTasks(tasks => {
+        const activeIndex = tasks.findIndex(t => t.id === activeId);
+        const overIndex = tasks.findIndex(t => t.id === overId);
+
+        if (tasks[activeIndex].column_id != tasks[overIndex].column_id) {
+          tasks[activeIndex].column_id = tasks[overIndex].column_id;
+          return arrayMove(tasks, activeIndex, overIndex - 1);
+        }
+
+        return arrayMove(tasks, activeIndex, overIndex);
+      });
+    }
+
+    const isOverAColumn = over.data.current?.type === 'Column';
+    // Im dropping a Task over a column
+    if (isActiveATask && isOverAColumn) {
+      setTasks(tasks => {
+        const activeIndex = tasks.findIndex(t => t.id === activeId);
+        tasks[activeIndex].column_id = overId;
+        return arrayMove(tasks, activeIndex, activeIndex);
+      });
+    }
   };
 
   return (
@@ -205,6 +253,7 @@ const KanbanBoard = () => {
       <DndContext
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
         sensors={sensors}
       >
         <Flex className="horizontal-scroll-column-wrapper">
@@ -228,15 +277,17 @@ const KanbanBoard = () => {
             isOpen={isOpen}
           />
         </Flex>
-        {activeColumn && (
-          <DragOverlay>
+
+        <DragOverlay>
+          {activeColumn && (
             <ColumnContainer
               column={activeColumn}
               updateColumnTitle={updateColumnTitle}
               tasks={tasks.filter(task => task.column_id === activeColumn.id)}
             />
-          </DragOverlay>
-        )}
+          )}
+          {activeTask && <TaskCard task={activeTask} />}
+        </DragOverlay>
       </DndContext>
     </Box>
   );
