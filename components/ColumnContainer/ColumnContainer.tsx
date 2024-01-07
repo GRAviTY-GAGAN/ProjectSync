@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { Column, ID } from '../../utils/types';
 import './index.scss';
 import TaskCard from '../TaskCard/TaskCard';
-
+import { motion } from 'framer-motion';
 interface Props {
   column: Column;
   updateColumnTitle: (id: ID, title: string) => void;
@@ -52,6 +52,15 @@ const ColumnContainer = (props: Props) => {
       </div>
     );
   }
+  const taskVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: (index: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: { ease: 'easeIn', delay: (index + 2) * 0.7 }
+    })
+  };
+
   return (
     <Box className="column-container" ref={setNodeRef} style={style}>
       <div
@@ -88,7 +97,11 @@ const ColumnContainer = (props: Props) => {
         <SortableContext items={tasksIds}>
           {tasks &&
             tasks.length > 0 &&
-            tasks.map((task: any) => <TaskCard task={task} key={task.id} />)}
+            tasks.map((task: any, i: number) => (
+              <motion.div key={i} variants={taskVariants} custom={i}>
+                <TaskCard task={task} key={task.id} />
+              </motion.div>
+            ))}
         </SortableContext>
       </Box>
     </Box>

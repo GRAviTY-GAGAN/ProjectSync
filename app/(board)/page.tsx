@@ -3,6 +3,7 @@ import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 import AddBoardColumnModal from '@/components/AddBoardColumnModal/AddBoardColumnModal';
 import ColumnContainer from '@/components/ColumnContainer/ColumnContainer';
 import TaskCard from '@/components/TaskCard/TaskCard';
+import { motion } from 'framer-motion';
 import {
   ADD_UPDATE_COLUMN_TO_PROJECT,
   GET_PROJECT_COLUMNS
@@ -199,7 +200,18 @@ const KanbanBoard = () => {
       });
     }
   };
-
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { delay: 0.5 } }
+  };
+  const columnVariants = {
+    hidden: { x: -50, opacity: 0 },
+    visible: (index: number) => ({
+      x: 0,
+      opacity: 1,
+      transition: { ease: 'easeIn', delay: index * 0.5 }
+    })
+  };
   return (
     <Box className="kanban-board-container">
       <Box className="kanban-board-header">
@@ -256,28 +268,35 @@ const KanbanBoard = () => {
         onDragOver={onDragOver}
         sensors={sensors}
       >
-        <Flex className="horizontal-scroll-column-wrapper">
-          {columns && columns?.length > 0 && (
-            <SortableContext items={columnsId}>
-              {columns?.map(col => (
-                <ColumnContainer
-                  updateColumnTitle={updateColumnTitle}
-                  column={col}
-                  key={col.id}
-                  tasks={tasks.filter(task => task.column_id === col.id)}
-                />
-              ))}
-            </SortableContext>
-          )}
-          <Button onClick={onOpen}>+</Button>
-          <AddBoardColumnModal
-            onCancel={onClose}
-            onClose={onClose}
-            onSubmit={handleAddColumn}
-            isOpen={isOpen}
-          />
-        </Flex>
-
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <Flex className="horizontal-scroll-column-wrapper">
+            {columns && columns?.length > 0 && (
+              <SortableContext items={columnsId}>
+                {columns?.map((col, i) => (
+                  <motion.div key={i} variants={columnVariants} custom={i}>
+                    <ColumnContainer
+                      updateColumnTitle={updateColumnTitle}
+                      column={col}
+                      key={col.id}
+                      tasks={tasks.filter(task => task.column_id === col.id)}
+                    />
+                  </motion.div>
+                ))}
+              </SortableContext>
+            )}
+            <Button onClick={onOpen}>+</Button>
+            <AddBoardColumnModal
+              onCancel={onClose}
+              onClose={onClose}
+              onSubmit={handleAddColumn}
+              isOpen={isOpen}
+            />
+          </Flex>
+        </motion.div>
         <DragOverlay>
           {activeColumn && (
             <ColumnContainer
