@@ -1,17 +1,24 @@
 import { Box, Divider, Input, Tag } from '@chakra-ui/react';
-import { useSortable } from '@dnd-kit/sortable';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
 import { Column, ID } from '../../utils/types';
-import { useState } from 'react';
+import TaskCard from '../TaskCard/TaskCard';
 import './index.scss';
-
 interface Props {
   column: Column;
   updateColumnTitle: (id: ID, title: string) => void;
+  // TODO: change type of Task
+  tasks: any[];
 }
 
 const ColumnContainer = (props: Props) => {
-  const { column, updateColumnTitle } = props;
+  const { column, updateColumnTitle, tasks } = props;
+
+  const tasksIds = useMemo(() => {
+    return tasks.map(task => task.id);
+  }, [tasks]);
 
   const [editMode, setEditMode] = useState(false);
   const {
@@ -45,6 +52,7 @@ const ColumnContainer = (props: Props) => {
       </div>
     );
   }
+
   return (
     <Box className="column-container" ref={setNodeRef} style={style}>
       <div
@@ -75,9 +83,17 @@ const ColumnContainer = (props: Props) => {
             }}
           />
         )}
-        <Divider my={2} />
-        <Box className="tasks-container"></Box>
       </div>
+      <Divider my={2} />
+      <Box className="tasks-container">
+        <SortableContext items={tasksIds}>
+          {tasks &&
+            tasks.length > 0 &&
+            tasks.map((task: any, i: number) => (
+              <TaskCard task={task} key={task.id} />
+            ))}
+        </SortableContext>
+      </Box>
     </Box>
   );
 };

@@ -1,8 +1,8 @@
+import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 import { COLOR_SCHEMES } from '@/utils/constants';
 import {
   Button,
   Divider,
-  Flex,
   Input,
   Modal,
   ModalBody,
@@ -15,9 +15,8 @@ import {
   Tag,
   Text
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './index.scss';
-import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
 
 const COLUMN_COLOR_OPTIONS = [
   COLOR_SCHEMES.GRAY,
