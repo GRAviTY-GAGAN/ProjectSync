@@ -1,9 +1,13 @@
 .auth-container-wrapper {
   width: 100%;
   height: 100vh;
-  background: #0f2027;
-  background: -webkit-linear-gradient(to left, #2c5364, #203a43, #0f2027);
-  background: linear-gradient(to left, #2c5364, #203a43, #0f2027);
+  //   background: #0f2027;
+  //   background: -webkit-linear-gradient(to left, #2c5364, #203a43, #0f2027);
+  //   background: linear-gradient(to left, #2c5364, #203a43, #0f2027);
+
+  background: #020617;
+  background: -webkit-linear-gradient(to left, #1e293b, #0f172a, #020617);
+  background: linear-gradient(to left, #1e293b, #0f172a, #020617);
   .auth-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -16,7 +20,7 @@
       align-items: center;
       padding: 48px;
       .tagline {
-        color: #d9f1f4;
+        color: var(--slate-100);
         font-weight: 700;
         line-height: 1.5;
       }
@@ -30,22 +34,22 @@
         //   rgb(217, 241, 244) 0%,
         //   rgb(135, 207, 217) 100%
         // );
-        background-color: #d9f1f4;
-        border-radius: 32px;
+        background-color: var(--slate-100);
+        border-radius: 16px;
         height: 100%;
 
         .product-title {
           font-size: 40px;
           font-weight: 900;
           text-align: center;
-          background-image: linear-gradient(to bottom, #0f2027, #2a6374);
+          background-image: linear-gradient(to bottom, #020617, #64748b);
           color: transparent;
           -webkit-background-clip: text;
           background-clip: text;
         }
 
         .login-form {
-          padding: 28px;
+          padding: 20px 28px;
           .welcome {
             font-size: 20px;
             font-weight: 800;
@@ -75,18 +79,19 @@
             span {
               color: var(--slate-700);
               font-weight: 700;
+              cursor: pointer;
             }
           }
           .login-cta {
-            background-color: #2a6374;
-            color: #d9f1f4;
+            background-color: var(--slate-800);
+            color: var(--slate-100);
             margin: 16px 0px;
             width: 100%;
           }
           .test-login-cta {
-            border: 1.5px solid #2a6374;
+            border: 1.5px solid var(--slate-800);
             width: 100%;
-            color: #2a6374;
+            color: var(--slate-800);
           }
         }
       }
