@@ -3,6 +3,10 @@ import { CREATE_TASK, DELETE_ATTACHMENTS } from '@/graphql/queries';
 import { useMutation } from '@apollo/client';
 import {
   Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -60,6 +64,7 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
     setLabels([]);
     setLabelValue('');
     setFilesSelected([]);
+    setPoints(0);
     onClose();
   }
 
@@ -208,12 +213,20 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
                   <div>Priority</div>
                 </div>
                 <div className="add-modal-values">
-                  <select onChange={e => setPriority(e.target.value)}>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="urgent">Urgent</option>
-                  </select>
+                  <Menu>
+                    <MenuButton>{priority}</MenuButton>
+                    <MenuList style={{ display: 'block' }}>
+                      <MenuItem onClick={() => setPriority('Low')}>
+                        Low
+                      </MenuItem>
+                      <MenuItem onClick={() => setPriority('Medium')}>
+                        Medium
+                      </MenuItem>
+                      <MenuItem onClick={() => setPriority('High')}>
+                        High
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </div>
               <div className="add-modal-detail">
@@ -261,12 +274,21 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
                   <div>Assignee</div>
                 </div>
                 <div className="add-modal-values">
-                  <select onChange={e => setAssignee(e.target.value)}>
-                    <option value="">Select Assignee</option>
-                    <option value="James Green">James Green</option>
-                    <option value="Emma Willis ">Emma Willis </option>
-                    <option value="Tom Grey">Tom Grey</option>
-                  </select>
+                  <Menu>
+                    <MenuButton>{assignee || 'Select Assignee'}</MenuButton>
+                    <MenuList style={{ display: 'block' }}>
+                      <MenuItem onClick={() => setAssignee('James Green')}>
+                        James Green
+                      </MenuItem>
+                      <MenuItem onClick={() => setAssignee('Emma Willis')}>
+                        Emma Willis
+                      </MenuItem>
+                      <MenuItem onClick={() => setAssignee('Tom Grey')}>
+                        Tom Grey
+                      </MenuItem>
+                      <MenuItem onClick={() => setAssignee('')}>Clear</MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </div>
               <div className="add-modal-detail">
@@ -291,14 +313,21 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
                   <div>Story Points</div>
                 </div>
                 <div className="add-modal-values">
-                  <select onChange={e => setPoints(Number(e.target.value))}>
-                    <option value="">Points</option>
-                    {Array.from(new Array(13).fill(0)).map((item, index) => (
-                      <option key={index + 1} value={index + 1}>
-                        {index + 1}
-                      </option>
-                    ))}
-                  </select>
+                  <Menu size={'small'}>
+                    <MenuButton>{points || 'Points'}</MenuButton>
+                    <MenuList style={{ display: 'block' }}>
+                      {Array.from(new Array(13).fill(0)).map((item, index) => (
+                        <MenuItem
+                          onClick={() => setPoints(index + 1)}
+                          key={index + 1}
+                          value={index + 1}
+                        >
+                          {index + 1}
+                        </MenuItem>
+                      ))}
+                      <MenuItem onClick={() => setPoints(0)}>Clear</MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </div>
             </div>
@@ -345,13 +374,7 @@ const AddTaskModal = ({ isOpen, onClose }: any) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              isDisabled={loading}
-              size="sm"
-              colorScheme="blue"
-              onClick={saveTask}
-              className="add-modal-save-btn"
-            >
+            <Button isDisabled={loading} size="sm" onClick={saveTask}>
               {!loading ? 'Save' : <Spinner size="md" color="white.500" />}
             </Button>
           </ModalFooter>
