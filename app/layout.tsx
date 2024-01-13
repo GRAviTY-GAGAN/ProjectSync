@@ -17,6 +17,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isLoggedIn = false;
   return (
     <html lang="en">
       <body>
@@ -24,19 +25,23 @@ export default function RootLayout({
           <ChakraProvider>
             <ReduxProvider>
               <MainContainerWrapper>
-                <Flex>
-                  <SideNav />
-                  <Divider
-                    orientation="vertical"
-                    height={'100vh'}
-                    width={'2px'}
-                  />
-                  <Box w="83vw">
-                    <TopNav />
-                    <Divider width={'100%'} height={'2px'} />
-                    {children}
-                  </Box>
-                </Flex>
+                {isLoggedIn ? (
+                  <Flex>
+                    <SideNav />
+                    <Divider
+                      orientation="vertical"
+                      height={'100vh'}
+                      width={'2px'}
+                    />
+                    <Box w="83vw">
+                      <TopNav />
+                      <Divider width={'100%'} height={'2px'} />
+                      {children}
+                    </Box>
+                  </Flex>
+                ) : (
+                  <div>{children}</div>
+                )}
               </MainContainerWrapper>
             </ReduxProvider>
           </ChakraProvider>
