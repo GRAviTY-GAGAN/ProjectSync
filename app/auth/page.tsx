@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable prettier/prettier */
 'use client';
 import {
   Box,
@@ -14,9 +16,87 @@ import React, { useState } from 'react';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import './index.scss';
 import { motion } from 'framer-motion';
+import useCustomToast, { StatusEnum } from '@/Hooks/useCustomToast';
+import { useMutation } from '@apollo/client';
+import { CREATE_USER, LOGIN } from '@/graphql/queries';
+import { useRouter } from 'next/navigation';
 
 const Auth = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [createUser] = useMutation(CREATE_USER);
+  const [userLogin] = useMutation(LOGIN);
+
+  const [callToast] = useCustomToast();
+  const router = useRouter();
+
+  function signUp() {
+    if (name && email && password) {
+      const createUserDto = { name, email, password };
+      createUser({ variables: { createUserDto } })
+        .then(res => {
+          console.log(res);
+          const response = res?.data.createUser;
+
+          if (response.status) {
+            router.replace('/');
+            callToast({
+              title: response.message,
+              status: StatusEnum.success
+            });
+          } else {
+            callToast({
+              title: response.message,
+              status: StatusEnum.warning
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      callToast({
+        title: 'Insufficient details.',
+        description: 'Please fill all the fields',
+        status: StatusEnum.info
+      });
+    }
+  }
+
+  function logIn() {
+    if (email && password) {
+      const loginUserInput = { email, password };
+      userLogin({ variables: { loginUserInput } })
+        .then(res => {
+          console.log(res);
+          const response = res?.data.login;
+          if (response.status) {
+            router.replace('/');
+            callToast({
+              title: response.message,
+              status: StatusEnum.success
+            });
+          } else {
+            callToast({
+              title: response.message,
+              status: StatusEnum.warning
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      callToast({
+        title: 'Insufficient details.',
+        description: 'Please fill all the fields',
+        status: StatusEnum.info
+      });
+    }
+  }
+
   return (
     <Box className="auth-container-wrapper">
       <Box className="auth-container">
@@ -44,12 +124,14 @@ const Auth = () => {
 
                     <Text className="input-label">Email</Text>
                     <Input
+                      onChange={e => setEmail(e.target.value)}
                       className="input-element"
                       focusBorderColor="#0f172a"
                       placeholder="Enter your email"
                     />
                     <Text className="input-label">Password</Text>
                     <Input
+                      onChange={e => setPassword(e.target.value)}
                       className="input-element"
                       focusBorderColor="#0f172a"
                       placeholder="Enter your password"
@@ -67,6 +149,7 @@ const Auth = () => {
                       rightIcon={
                         <FaArrowRightLong className="icon-size-small" />
                       }
+                      onClick={logIn}
                     >
                       Login
                     </Button>
@@ -88,6 +171,7 @@ const Auth = () => {
                     </Text>
                     <Text className="input-label">Name</Text>
                     <Input
+                      onChange={e => setName(e.target.value)}
                       className="input-element"
                       focusBorderColor="#0f172a"
                       placeholder="Enter your name"
@@ -95,12 +179,14 @@ const Auth = () => {
 
                     <Text className="input-label">Email</Text>
                     <Input
+                      onChange={e => setEmail(e.target.value)}
                       className="input-element"
                       focusBorderColor="#0f172a"
                       placeholder="Enter your email"
                     />
                     <Text className="input-label">Password</Text>
                     <Input
+                      onChange={e => setPassword(e.target.value)}
                       className="input-element"
                       focusBorderColor="#0f172a"
                       placeholder="Enter your password"
@@ -116,6 +202,7 @@ const Auth = () => {
                       rightIcon={
                         <FaArrowRightLong className="icon-size-small" />
                       }
+                      onClick={signUp}
                     >
                       Sign Up
                     </Button>

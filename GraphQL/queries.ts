@@ -43,6 +43,7 @@ export const ADD_UPDATE_COLUMN_TO_PROJECT = gql`
     }
   }
 `;
+
 export const GET_PROJECT_COLUMNS = gql`
   query getProjectById($id: String!) {
     getProjectById(id: $id) {
@@ -54,6 +55,33 @@ export const GET_PROJECT_COLUMNS = gql`
           id
           title
         }
+      }
+    }
+  }
+`;
+
+export const CREATE_USER = gql`
+  mutation createUser($createUserDto: CreateUserDto!) {
+    createUser(createUserDto: $createUserDto) {
+      message
+      status
+      data {
+        email
+        name
+      }
+    }
+  }
+`;
+
+export const LOGIN = gql`
+  mutation login($loginUserInput: LoginUserInput!) {
+    login(loginUserInput: $loginUserInput) {
+      message
+      status
+      access_token
+      user {
+        name
+        email
       }
     }
   }
