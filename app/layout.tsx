@@ -17,7 +17,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   return (
     <html lang="en">
       <body>

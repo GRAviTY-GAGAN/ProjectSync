@@ -40,6 +40,7 @@ import { BiUser } from 'react-icons/bi';
 import { HiOutlineSortDescending } from 'react-icons/hi';
 import { LuFilter } from 'react-icons/lu';
 import './index.scss';
+import Navigator from '@/components/Navigator/Navigator';
 
 const getColumnsStructuredData = (
   columns: any[]
@@ -214,54 +215,7 @@ const KanbanBoard = () => {
   };
   return (
     <Box className="kanban-board-container">
-      <Box className="kanban-board-header">
-        <Text as="b" fontSize={'x-large'}>
-          Board
-        </Text>
-        <div>
-          <Button
-            leftIcon={<BiUser className="icon-size-small" />}
-            variant={'ghost'}
-            size="sm"
-          >
-            My Issues
-          </Button>
-          <Menu closeOnSelect={false}>
-            <MenuButton
-              as={Button}
-              size="sm"
-              variant={'ghost'}
-              leftIcon={<LuFilter className="icon-size-small" />}
-            >
-              Filter
-            </MenuButton>
-            <MenuList minWidth="240px">
-              <MenuOptionGroup type="checkbox">
-                <MenuItemOption value="email">Filter 1</MenuItemOption>
-                <MenuItemOption value="phone">Filter 2</MenuItemOption>
-                <MenuItemOption value="country">Filter 3</MenuItemOption>
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton
-              as={Button}
-              size="sm"
-              variant={'ghost'}
-              leftIcon={<HiOutlineSortDescending className="icon-size-small" />}
-            >
-              Sort
-            </MenuButton>
-            <MenuList minWidth="240px">
-              <MenuOptionGroup type="radio">
-                <MenuItemOption value="email">Sort 1</MenuItemOption>
-                <MenuItemOption value="phone">Sort 2</MenuItemOption>
-                <MenuItemOption value="country">Sort 3</MenuItemOption>
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
-        </div>
-      </Box>
+      <Navigator />
       <DndContext
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
