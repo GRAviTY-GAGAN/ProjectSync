@@ -1,0 +1,16 @@
+.current-screen-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .down {
+    margin-top: 4px;
+  }
+}
+
+.kanban-board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}

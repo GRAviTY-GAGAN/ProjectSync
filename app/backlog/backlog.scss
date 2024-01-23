@@ -1,0 +1,139 @@
+.backlog-main-container {
+  min-width: 100%;
+  padding: 24px;
+}
+
+.backlog-sprint-container,
+.backlog-backlog-container {
+  padding: 10px;
+  background-color: var(--slate-100);
+  font-weight: 600;
+}
+
+.backlog-backlog-container {
+  background-color: transparent;
+}
+
+.backlog-sprint,
+.backlog-backlog {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border-radius: 10px;
+  user-select: none;
+  padding-left: 5px;
+}
+
+.backlog-create-sprint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: var(--slate-200);
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.backlog-sprint-drop-empty {
+  min-height: 200px;
+  border: 2px dashed var(--slate-300);
+  margin: 1rem 0;
+}
+
+.backlog-backlog-drop-empty {
+  min-height: 50px;
+  border: 2px dashed var(--slate-300);
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
+
+.backlog-sub-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.backlog-title-assignee {
+  display: flex;
+  justify-content: space-between;
+}
+
+.backlog-issue-card {
+  font-size: 14px;
+  border-bottom: 1px solid var(--slate-300);
+  padding: 10px;
+  background-color: white;
+
+  &:nth-last-of-type(1) {
+    border-bottom: none;
+  }
+}
+
+.backlog-sprint-drop {
+  margin: 0.5rem 0;
+}
+
+.backlog-labels-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.backlog-issue-card-container {
+  background-color: white;
+  border: 1px solid var(--slate-300);
+  cursor: default;
+}
+
+.backlog-label {
+  font-size: 12px;
+  background-color: var(--blue-two);
+  color: var(--blue-one);
+  padding: 2px 10px;
+  border-radius: 50px;
+}
+
+.backlog-main-empty-container {
+  margin-top: 3rem;
+}
+
+.backlog-sub-empty-container {
+  font-size: 12px !important;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+
+  div:nth-of-type(2) {
+    p:nth-of-type(1) {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    p:nth-of-type(2) {
+      max-width: 600px;
+
+      strong {
+        font-weight: 800;
+      }
+    }
+  }
+}
+
+.backlog-overlay-card {
+  height: 57px;
+  padding: 10px;
+}
