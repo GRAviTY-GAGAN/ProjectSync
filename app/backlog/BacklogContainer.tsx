@@ -1,41 +1,41 @@
-import { Box, Text } from '@chakra-ui/react';
-import emptyBoard from '../../assets/icons/empty-board.svg';
-import Image from 'next/image';
-import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { Box, Button, Text } from '@chakra-ui/react';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import React, { useState } from 'react';
+import { FaAngleDown, FaAngleRight, FaPlus } from 'react-icons/fa';
+import BacklogEmpty from './BacklogEmpty';
 
-const BacklogContainer = () => {
-  const { setNodeRef, listeners, attributes, transform, transition } =
-    useSortable({
-      id: 'BacklogContainer',
-      data: { type: 'Backlog Container' }
-    });
-
-  const style = {
+const BacklogContainer = ({ createSprint }: any) => {
+  const {
+    setNodeRef,
     transition,
-    transform: CSS.Transform.toString(transform)
-  };
+    transform,
+    attributes,
+    listeners,
+    isDragging
+  } = useSortable({ id: 'Back Log Main Conatiner' });
+
+  const [backLogOpen, setBackLogOpen] = useState(false);
 
   return (
-    <Box
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={style}
-      className="backlog-main-empty-container"
-    >
-      <Box className="backlog-sub-empty-container">
-        <Box>
-          <Image width={100} src={emptyBoard} alt="Empty Board" />
+    <Box ref={setNodeRef} className="backlog-backlog-container">
+      <Box className="backlog-backlog-header">
+        <Box className="backlog-backlog">
+          <Box onClick={() => setBackLogOpen(!backLogOpen)}>
+            {backLogOpen ? <FaAngleDown /> : <FaAngleRight />}
+          </Box>
+          <Text>Backlog</Text> <Text>(0 issues)</Text>
         </Box>
-        <Box>
-          <Text>Plan your sprint</Text>
-          <Text>
-            Drag issues from the <strong>Backlog</strong> section, or create new
-            issues, to plan the work for this sprint. Select{' '}
-            <strong>Start sprint</strong> when youre ready.
-          </Text>
+        <Button onClick={createSprint} size={'sm'}>
+          Create Sprint
+        </Button>
+      </Box>
+      <Box className={!backLogOpen ? 'hide' : ''}>
+        <SortableContext items={['backlog container']}>
+          <BacklogEmpty />
+          <Box></Box>
+        </SortableContext>
+        <Box className="backlog-create-sprint">
+          <FaPlus /> <Text>Create issue</Text>
         </Box>
       </Box>
     </Box>

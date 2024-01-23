@@ -1,10 +1,10 @@
 import { Box, Text } from '@chakra-ui/react';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
-import React from 'react';
+import React, { useState } from 'react';
 import { CSS } from '@dnd-kit/utilities';
-import SprintCard from './SprintCard';
+import SprintCard from './BacklogTaskCard';
 
-const BacklogEmpty = ({ backLogArray }: any) => {
+const BacklogEmpty = ({}: any) => {
   const {
     setNodeRef,
     transition,
@@ -14,8 +14,10 @@ const BacklogEmpty = ({ backLogArray }: any) => {
     isDragging
   } = useSortable({
     id: 'BacklogEmpty Container',
-    data: { type: 'BacklogEmpty Container', array: backLogArray }
+    data: { type: 'BacklogEmpty Container' }
   });
+
+  const [backLogArray, setbackLogArray] = useState([]);
 
   const style = {
     transition,
