@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { FaAngleDown, FaAngleRight, FaPlus } from 'react-icons/fa';
 import BacklogEmpty from './BacklogEmpty';
 
-const BacklogContainer = ({ createSprint }: any) => {
+const BacklogContainer = ({ createSprint, createIssue }: any) => {
   const {
     setNodeRef,
     transition,
@@ -17,7 +17,7 @@ const BacklogContainer = ({ createSprint }: any) => {
   const [backLogOpen, setBackLogOpen] = useState(false);
 
   return (
-    <Box ref={setNodeRef} className="backlog-backlog-container">
+    <Box ref={setNodeRef}>
       <Box className="backlog-backlog-header">
         <Box className="backlog-backlog">
           <Box onClick={() => setBackLogOpen(!backLogOpen)}>
@@ -34,7 +34,10 @@ const BacklogContainer = ({ createSprint }: any) => {
           <BacklogEmpty />
           <Box></Box>
         </SortableContext>
-        <Box className="backlog-create-sprint">
+        <Box
+          onClick={() => createIssue('backlog')}
+          className="backlog-create-issue"
+        >
           <FaPlus /> <Text>Create issue</Text>
         </Box>
       </Box>
